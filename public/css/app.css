@@ -1,0 +1,21 @@
+body {
+    background-image: url(../images/fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: Marvel;
+    color: black;
+}
+.difuminado {
+    width: 100%;
+    height: 100%;
+}
+td {
+    width: 200px;
+}
+td img {
+    max-height: 100px;
+}
+.img_heroe {
+    max-height: 500px;
+    width: 100%;
+}

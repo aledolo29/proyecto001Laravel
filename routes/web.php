@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CursoController;
+use App\Http\Controllers\PersonajeController;
+use App\Http\Controllers\UsuarioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,25 +19,28 @@ use App\Http\Controllers\CursoController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('/', HomeController::class);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [PersonajeController::class, 'login'])->name('inicioSesion');
 
-Route::get('cursos', [CursoController::class, 'index']);
+Route::get('registro', [PersonajeController::class, 'create'])->name('usuario.registro');
 
-Route::get('cursos/create', [CursoController::class, 'create']);
+Route::post('registro/store', [UsuarioController::class, 'store'])->name('usuario.registro.store');
 
-Route::get('cursos/{curso}', [CursoController::class, 'show']);
+Route::get('sesion/comprobar', [UsuarioController::class, 'comprobarUser'])->name('usuario.comprobar');
 
-// Route::get('cursos/{curso}/{categoria?}', function ($curso, $categoria = null) {
-//     if ($categoria) {
-//         return "Bienvenido al curso $curso de la categoría $categoria";
-//     } else {
-//         return "Bienvenido al curso $curso";
-//     }
-// });
+Route::get('index', [PersonajeController::class, 'index'])->name('pagina.index');
+
+Route::get('formulario', [PersonajeController::class, 'formulario'])->name('show.formulario');
+
+Route::post('formulario/guardar', [PersonajeController::class, 'guardarPersonaje'])->name('personaje.guardar');
+
+Route::get('personaje/mostrar/{id}', [PersonajeController::class, 'showPersonaje'])->name('personaje.mostrar');
+
+Route::get('personaje/editar/{id}', [PersonajeController::class, 'editarPersonaje'])->name('personaje.editar');
+
+Route::put('personaje/update/{id}', [PersonajeController::class, 'updatePersonaje'])->name('personaje.update');
+
+Route::delete('personaje/eliminar/{id}', [PersonajeController::class, 'eliminarPersonaje'])->name('personaje.eliminar');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
