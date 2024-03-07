@@ -4,7 +4,19 @@
 @section('content')
     <div class="container-fluid d-flex align-items-center justify-content-center vh-100 position-relative">
         <div class="w-100 h-100 bg-black position-absolute opacity-75"></div>
-        <div class="bg-white p-4 z-1 rounded-5 d-flex flex-column justify-content-center" style="width: 500px; height: 600px;">
+        <div class="bg-white p-4 z-1 rounded-5 d-flex flex-column justify-content-center"
+            style="width: 500px; height: 600px;">
+            @if (Session::has('mensaje'))
+                <div id="mensaje" class="alert alert-success fs-5 fw-bold" role="alert">
+                    {{ Session::get('mensaje') }}
+                </div>
+            @endif
+            <script>
+                // Ocultar el mensaje después de 5 segundos
+                setTimeout(function() {
+                    document.getElementById('mensaje').style.display = 'none';
+                }, 5000);
+            </script>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>

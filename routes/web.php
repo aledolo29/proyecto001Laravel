@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PersonajeController;
-use App\Http\Controllers\UsuarioController;
-
+use App\Http\Controllers\UserController;
+use App\Mail\ContactanosMailable;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,13 +21,16 @@ use App\Http\Controllers\UsuarioController;
 //     return view('welcome');
 // });
 
-Route::get('/', [PersonajeController::class, 'login'])->name('inicioSesion');
+// Rutas protegidas que requieren verificación de correo electrónico
+Route::get('contactanos/{email}', [UserController::class, 'enviarEmail'])->name('contactanos');
 
-Route::get('registro', [PersonajeController::class, 'create'])->name('usuario.registro');
+Route::get('inicioSesion', [UserController::class, 'login'])->name('inicioSesion');
 
-Route::post('registro/store', [UsuarioController::class, 'store'])->name('usuario.registro.store');
+Route::get('registro', [UserController::class, 'create'])->name('usuario.registro');
 
-Route::get('sesion/comprobar', [UsuarioController::class, 'comprobarUser'])->name('usuario.comprobar');
+Route::post('registro/store', [UserController::class, 'store'])->name('usuario.registro.store');
+
+Route::get('sesion/comprobar', [UserController::class, 'comprobarUser'])->name('usuario.comprobar');
 
 Route::get('index', [PersonajeController::class, 'index'])->name('pagina.index');
 
@@ -42,10 +46,5 @@ Route::put('personaje/update/{id}', [PersonajeController::class, 'updatePersonaj
 
 Route::delete('personaje/eliminar/{id}', [PersonajeController::class, 'eliminarPersonaje'])->name('personaje.eliminar');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__ . '/auth.php';

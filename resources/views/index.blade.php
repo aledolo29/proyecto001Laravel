@@ -2,8 +2,10 @@
 @section('title', 'Inicio')
 @section('content')
     <div class="container-fluid mt-4">
-        <h1 class="text-white">{{ session('usuario') }}</h1>
-        <h1 class="fw-bold text-white text-center mb-4">PERSONAJES</h1>
+        <div class="d-flex justify-content-evenly w-75"> 
+            <h1 class="text-white">Usuario: {{ session('usuario') }}</h2>
+            <h1 class="fw-bold text-white text-center">PERSONAJES</h1>
+        </div>
         @if (Session::has('mensaje'))
             <div id="mensaje" class="alert alert-success fs-5 fw-bold" role="alert">
                 {{ Session::get('mensaje') }}

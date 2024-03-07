@@ -13,15 +13,7 @@ use function Laravel\Prompts\alert;
 
 class PersonajeController extends Controller
 {
-    public function login()
-    {
-        return view('login');
-    }
 
-    public function create()
-    {
-        return view('registro');
-    }
     public function index()
     {
         $personajes = Personaje::all();

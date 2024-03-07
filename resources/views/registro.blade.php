@@ -8,7 +8,7 @@
             <picture class="d-flex justify-content-center">
                 <img src="{{ asset('images/Captain-America-Logo-1-removebg-preview.png') }}" class="w-50" alt="Logo">
             </picture>
-            <form method="POST" action="{{ route('usuario.registro.store') }}">
+            <form method="post" action="{{ route('usuario.registro.store') }}">
                 @csrf
                 <div class="mb-3">
                     <label for="usuario" class="form-label fw-bold">Usuario</label>
