@@ -35,15 +35,11 @@
                 <div class="mb-3">
                     <label for="usuario" class="form-label fw-bold">Usuario</label>
                     <input type="usuario" class="form-control border-dark-subtle" id="usuario" name="usuario"
-                        aria-describedby="usuario">
+                        aria-describedby="usuario" required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label fw-bold">Contraseña</label>
-                    <input type="password" class="form-control border-dark-subtle" id="password" name="password">
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input border-dark-subtle" id="exampleCheck1">
-                    <label class="form-check-label fw-bold" for="exampleCheck1">Recuérdamelo</label>
+                    <input type="password" class="form-control border-dark-subtle" id="password" name="password" required>
                 </div>
                 <button type="submit" class="btn btn-danger">Iniciar Sesión</button>
                 <a href="{{ route('usuario.registro') }}"

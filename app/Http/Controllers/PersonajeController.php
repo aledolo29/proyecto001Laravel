@@ -6,7 +6,7 @@ use App\Models\Enemigo;
 use App\Models\Personaje;
 use App\Models\Poder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Faker\Factory as Faker;
 use Illuminate\Support\Facades\Session;
 
 use function Laravel\Prompts\alert;
@@ -14,9 +14,10 @@ use function Laravel\Prompts\alert;
 class PersonajeController extends Controller
 {
 
+
     public function index()
     {
-        $personajes = Personaje::all();
+        $personajes = Personaje::paginate(5);
         return view('index', compact('personajes'));
     }
 
@@ -27,18 +28,23 @@ class PersonajeController extends Controller
 
     public function guardarPersonaje(Request $request)
     {
+        $faker = Faker::create();
         $personaje = new Personaje();
-        $personaje->nombre = $request["nombre"];
-        $personaje->afilicion = $request["afiliacion"];
-        $personaje->historia = $request["historia"];
-        $personaje->apariencia = $request["apariencia"];
+        $personaje->nombre = $request->filled('nombre') ? $request->nombre : $faker->name();
+        $personaje->afilicion = $request->filled("afiliacion") ? $request->afilicion : 'Ninguna';
+        $personaje->historia = $request->filled('historia') ? $request->historia : $faker->sentence();
+        $personaje->apariencia = $request->filled('apariencia') ? $request->apariencia : $faker->sentence();
         $imagen = $request->file('imagen');
-        $carpetaDestino = 'images/';
-        $filename = time() . '-' . $imagen->getClientOriginalName();
-        $uploadSucces = $imagen->move($carpetaDestino, $filename);
-        $personaje->imagen = $carpetaDestino . $filename;
-        $personaje->rol = $request["rol"];
+        if ($imagen) {
+            $carpetaDestino = 'images/';
+            $filename = time() . '-' . $imagen->getClientOriginalName();
+            $imagen->move($carpetaDestino, $filename);
+            $personaje->imagen = $carpetaDestino . $filename;
+        }
+        $personaje->rol = $request->filled("rol") ? $request->rol : 'Anónimo';
         $personaje->save();
+
+        Session::flash('mensaje', '' . $personaje->nombre . ' se ha añadido correctamente.');
 
         return redirect()->route('pagina.index');
     }
@@ -70,11 +76,14 @@ class PersonajeController extends Controller
 
     public function updatePersonaje(Request $request, $id)
     {
+        $faker = Faker::create();
+
         $personaje = Personaje::find($id);
-        $personaje->nombre = $request["nombre"];
-        $personaje->historia = $request["historia"];
-        $personaje->afilicion = $request["afiliacion"];
-        $personaje->apariencia = $request["apariencia"];
+        $personaje->nombre = $request->filled('nombre') ? $request->nombre : $faker->name();
+        $personaje->afilicion = $request->filled("afiliacion") ? $request->afiliacion : 'Ninguna';
+        $personaje->historia = $request->filled('historia') ? $request->historia : $faker->sentence();
+        $personaje->apariencia = $request->filled('apariencia') ? $request->apariencia : $faker->sentence();
+        $personaje->rol = $request->rol;
 
         $poderes = Poder::where('id_personaje', $id)->first();
         if ($poderes) {
@@ -110,6 +119,7 @@ class PersonajeController extends Controller
 
     public function eliminarPersonaje($id)
     {
+        Enemigo::where('id_personaje', $id)->orWhere('id_enemigo', $id)->delete();
         $personaje = Personaje::find($id);
         $personaje->delete();
         Session::flash('mensaje', '' . $personaje->nombre . ' se ha borrado correctamente.');

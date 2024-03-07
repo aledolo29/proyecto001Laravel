@@ -21,10 +21,11 @@ use Illuminate\Support\Facades\Mail;
 //     return view('welcome');
 // });
 
-// Rutas protegidas que requieren verificación de correo electrónico
 Route::get('contactanos/{email}', [UserController::class, 'enviarEmail'])->name('contactanos');
 
-Route::get('inicioSesion', [UserController::class, 'login'])->name('inicioSesion');
+Route::get('seguridad/{email}', [UserController::class, 'enviarEmailSeguridad'])->name('email.seguridad');
+
+Route::get('/inicio', [UserController::class, 'login'])->name('inicioSesion');
 
 Route::get('registro', [UserController::class, 'create'])->name('usuario.registro');
 

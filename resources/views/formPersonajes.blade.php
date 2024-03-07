@@ -28,6 +28,7 @@
                 <div class="mb-3">
                     <label for="rol" class="form-label fw-bold">Rol</label>
                     <select name="rol" id="rol" class="form-select border-dark-subtle">
+                        <option value="">Seleccionar</option>
                         <option value="Heroe">Héroe</option>
                         <option value="Villano">Villano</option>
                     </select>

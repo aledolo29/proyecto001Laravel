@@ -2,9 +2,10 @@
 @section('title', 'Inicio')
 @section('content')
     <div class="container-fluid mt-4">
-        <div class="d-flex justify-content-evenly w-75"> 
+        <div class="d-flex justify-content-between align-items-center">
             <h1 class="text-white">Usuario: {{ session('usuario') }}</h2>
-            <h1 class="fw-bold text-white text-center">PERSONAJES</h1>
+                <h1 class="fw-bold text-white text-center display-5">PERSONAJES</h1>
+                <a class="fw-bold text-white fs-5" href="{{ route('inicioSesion') }}">Cerrar Sesion</a>
         </div>
         @if (Session::has('mensaje'))
             <div id="mensaje" class="alert alert-success fs-5 fw-bold" role="alert">
@@ -27,10 +28,14 @@
                     <th scope="col">Historia</th>
                     <th scope="col">Apariencia</th>
                     <th scope="col">Imagen</th>
-                    <form action="{{ route('show.formulario') }}" method="get">
-                        <th scope="col" colspan="3" class="text-end"><input type="submit"
-                                class="btn btn-outline-light" value="Nuevo Personaje"></th>
-                    </form>
+                    @if (session('email') == 'admin@gmail.com')
+                        <form action="{{ route('show.formulario') }}" method="get">
+                            <th scope="col" colspan="3" class="text-end"><input type="submit"
+                                    class="btn btn-outline-light" value="Nuevo Personaje"></th>
+                        </form>
+                    @else
+                        <th></th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -44,44 +49,51 @@
                         <td><img src="{{ asset($personaje->imagen) }}" alt="imagen" class="img-fluid"></td>
                         <td><a href="{{ route('personaje.mostrar', $personaje->id) }}"
                                 class="btn btn-success  w-100">Ver</a></td>
-                        <td><a href="{{ route('personaje.editar', $personaje->id) }}"
-                                class="btn btn-primary w-100">Editar</a></td>
-                        <td>
-                            <button data-bs-toggle="modal" data-bs-target="#confirmarEliminar{{ $personaje->id }}"
-                                class="btn btn-danger
-                                w-100">Borrar</button>
-                            <div class="modal fade text-black " id="confirmarEliminar{{ $personaje->id }}" tabindex="-1"
-                                aria-labelledby="confirmarEliminarLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="confirmarEliminarLabel">Confirmar Eliminación
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            ¿Estás seguro de que deseas eliminar este personaje?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Cancelar</button>
-                                            <!-- Enlace o formulario para realizar la eliminación -->
-                                            <form action="{{ route('personaje.eliminar', $personaje->id) }}"
-                                                method="POST">
-                                                @csrf
-                                                @method('delete')
-                                                <input type="submit" class="btn btn-danger" value="Eliminar">
-                                            </form>
+                        @if (session('email') == 'admin@gmail.com')
+                            <td><a href="{{ route('personaje.editar', $personaje->id) }}"
+                                    class="btn btn-primary w-100">Editar</a></td>
+                            <td>
+                                <button data-bs-toggle="modal" data-bs-target="#confirmarEliminar{{ $personaje->id }}"
+                                    class="btn btn-danger
+                                    w-100">Borrar</button>
+                                <div class="modal fade text-black " id="confirmarEliminar{{ $personaje->id }}"
+                                    tabindex="-1" aria-labelledby="confirmarEliminarLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="confirmarEliminarLabel">Confirmar Eliminación
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                ¿Estás seguro de que deseas eliminar este personaje?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancelar</button>
+                                                <!-- Enlace o formulario para realizar la eliminación -->
+                                                <form action="{{ route('personaje.eliminar', $personaje->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <input type="submit" class="btn btn-danger" value="Eliminar">
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
 
             </tbody>
         </table>
+        <div class="d-flex justify-content-center">
+            <div class="pagination">
+                {{ $personajes->links() }}
+            </div>
+        </div>
     </div>
 @endsection

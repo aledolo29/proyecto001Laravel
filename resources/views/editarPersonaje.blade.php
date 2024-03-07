@@ -30,6 +30,14 @@
                         value="{{ $personaje->apariencia }}">
                 </div>
                 <div class="mb-3">
+                    <label for="rol" class="form-label fw-bold">Rol</label>
+                    <select name="rol" id="rol" class="form-select border-dark-subtle">
+                        <option value="Anónimo" @if ($personaje->rol == 'Anónimo') selected @endif>Anónimo</option>
+                        <option value="Heroe" @if ($personaje->rol == 'Heroe') selected @endif>Heroe</option>
+                        <option value="Villano" @if ($personaje->rol == 'Villano') selected @endif>Villano</option>
+                    </select>
+                </div>
+                <div class="mb-3">
                     <label for="poder" class="form-label fw-bold">Poderes</label>
                     @if ($poderes)
                         <input type="text" class="form-control border-dark-subtle" id="poder" name="poder"
@@ -40,16 +48,16 @@
                     @endif
                 </div>
                 <div class="mb-3">
-                    <label for="enemigos" class="form-label fw-bold">Enemigos</label>
+                    <label for="enemigos" class="form-label fw-bold">Enemigos: </label>
                     @foreach ($enemigos as $enemigo)
-                        <div class="form-check">
-                            <input class="form-check-input border-dark-subtle" type="checkbox" name="enemigos_seleccionados[]"
-                                value="{{ $enemigo->id }}" id="opcion{{ $enemigo->id }}"
-                                {{ $enemigosChecked->contains('id_personaje', $enemigo->id) || $enemigosChecked->contains('id_enemigo', $enemigo->id) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="opcion{{ $enemigo->id }}">
-                                {{ $enemigo->nombre }}
-                            </label>
-                        </div>
+                    <div class="form-check d-inline-block">
+                        <input class="form-check-input border-dark-subtle mx-1" type="checkbox"
+                        name="enemigos_seleccionados[]" value="{{ $enemigo->id }}" id="opcion{{ $enemigo->id }}"
+                        {{ $enemigosChecked->contains('id_personaje', $enemigo->id) || $enemigosChecked->contains('id_enemigo', $enemigo->id) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="opcion{{ $enemigo->id }}">
+                            {{ $enemigo->nombre }}
+                        </label>
+                    </div>
                     @endforeach
                     </select>
                 </div>
